@@ -1,5 +1,5 @@
 *.iml
-.gitattribute
+.gitattributes
 .gradle
 /local.properties
 /.idea/caches
