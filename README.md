@@ -38,4 +38,4 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/NihalSinghrana809/spendly.git
+   git clone https://github.com/NihalSinghrana809/Spendly.git
