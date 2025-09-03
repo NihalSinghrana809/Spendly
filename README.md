@@ -62,5 +62,3 @@ Want to improve Spendly? ✨
 * 🔧 Fixed something? Create a pull request.
 
 Your contributions make Spendly better for everyone 💜
-
----
