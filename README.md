@@ -1,5 +1,3 @@
-Perfect 🎉 Since you want it a bit longer, more **beautiful**, and with better **icons & visual flow**, here’s an upgraded version of your README. It’ll feel more polished and attractive while still being concise.
-
 ---
 
 # 💸 Spendly – Smart Expense Tracking App
