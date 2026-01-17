@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.spendly.ui.Dial
 import com.venkatesh.spendly.ui.theme.LightGrayBackground
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -43,8 +44,8 @@ fun HomeScreen(navController: NavController) {
     val totalSpent = expenses.sumOf { it.amount }
     val totalEntries = expenses.size
 
-    val sharedPref = context.getSharedPreferences("spendly_prefs", Context.MODE_PRIVATE)
-    val limit = sharedPref.getFloat("limit", -1f)
+    val sharedPref = remember {  context.getSharedPreferences("spendly_prefs", Context.MODE_PRIVATE) }
+    var limit by remember { mutableStateOf(sharedPref.getFloat("limit", -1f)) }
 
     var sortOption by remember { mutableStateOf(SortOption.LATEST) }
     var expanded by remember { mutableStateOf(false) }
@@ -59,6 +60,7 @@ fun HomeScreen(navController: NavController) {
     }
 
     var showWelcome by remember { mutableStateOf(true) }
+    val increaseExpViewModel: IncreaseExpViewModel = viewModel(factory = ViewModelFactory(context.applicationContext as Application))
 
     LaunchedEffect(Unit) {
         delay(5000)
@@ -158,7 +160,10 @@ fun HomeScreen(navController: NavController) {
                                 .padding(vertical = 8.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = LightGrayBackground
-                            )
+                            ),
+                            onClick = {
+                                increaseExpViewModel.onOpen()
+                            }
                         ) {
                             Text(
                                 "No Spending Limit Set",
@@ -174,7 +179,10 @@ fun HomeScreen(navController: NavController) {
                                 .padding(bottom = 12.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = LightGrayBackground
-                            )
+                            ),
+                            onClick = {
+                                increaseExpViewModel.onOpen()
+                            }
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
@@ -252,4 +260,15 @@ fun HomeScreen(navController: NavController) {
             }
         }
     )
+
+    if(increaseExpViewModel.DialogOpen) {
+        Dial(
+            onDismiss = { increaseExpViewModel.onClose() },
+            onConfirm = {
+                if(it<limit) return@Dial
+                sharedPref.edit().putFloat("limit", it.toFloat()).apply()
+                limit = it.toFloat()
+                increaseExpViewModel.onClose()
+            })
+    }
 }
